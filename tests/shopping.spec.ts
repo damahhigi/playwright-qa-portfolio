@@ -1,25 +1,31 @@
 import {test, expect} from '@playwright/test';
+import {LoginPage} from '../pages/LoginPage';
+import {InventoryPage} from '../pages/InventoryPage';
+import {CartPage} from '../pages/CartPage';
+import {CheckoutPage} from '../pages/CheckoutPage';
+import {CheckoutOverviewPage} from '../pages/CheckoutOverviewPage';
 
 test ('user can complete a purchase successfully' , async ({page}) => {
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+    const checkoutPage = new CheckoutPage(page);
+    const checkoutoverviewPage = new CheckoutOverviewPage(page);
     await page.goto('https://www.saucedemo.com');
-    await page.getByPlaceholder('Username').fill('standard_user');
-    await page.getByPlaceholder('Password').fill('secret_sauce');
-    await page.getByRole('button', {name:'Login'}).click();
-    await page.getByText('Sauce Labs Backpack', {exact:true}).click();
-    await page.getByRole('button', {name:'Add to cart'}).click();
-    await expect(page.locator('.shopping_cart_badge')).toHaveText('1');
-    await page.locator('.shopping_cart_link').click();
-    await expect(page.getByText('Sauce Labs Backpack', {exact:true})).toBeVisible();
-    await expect(page.getByText('$29.99', {exact:true})).toBeVisible();
-    await page.getByRole('button', {name:'Checkout'}).click();
-    await page.getByPlaceholder('First Name').fill('Damaris');
-    await page.getByPlaceholder('Last Name').fill('Higi');
-    await page.getByPlaceholder('Zip/Postal Code').fill('0100');
-    await page.getByRole('button', {name:'Continue'}).click();
-    await expect(page.getByText('Sauce Labs Backpack', {exact:true})).toBeVisible();
-    await expect(page.getByText('$29.99',{exact:true})).toBeVisible();
-    await page.getByRole('button', {name:'Finish'}).click();
-    await expect(page.getByText('Thank you for your order!', {exact:true})).toBeVisible();
+    await loginPage.login('standard_user', 'secret_sauce');
+    await expect(page.getByText('Products', { exact: true })).toBeVisible();
+    await inventoryPage.selectBackpack();
+    await inventoryPage.addProductToCart();
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+    await inventoryPage.openCart();
+    await expect(cartPage.backpackName).toBeVisible();
+    await expect(cartPage.backpackPrice).toBeVisible();
+    await cartPage.checkout();
+    await checkoutPage.fillCheckoutInformation('Damaris', 'Higi', '0100');
+    await expect(checkoutoverviewPage.backpackName).toBeVisible();
+    await expect(checkoutoverviewPage.backpackPrice).toBeVisible();
+    await checkoutoverviewPage.finishOrder();
+    await expect(checkoutoverviewPage.successMessage).toBeVisible();
 
 
 
