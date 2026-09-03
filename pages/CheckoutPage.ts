@@ -5,12 +5,15 @@ export class CheckoutPage{
     readonly lastNameInput;
     readonly postalCodeInput;
     readonly continueButton;
+    readonly errorMessage;
+
     constructor(page: Page){
         this.page = page;
         this.firstNameInput = page.getByPlaceholder('First Name');
         this.lastNameInput = page.getByPlaceholder('Last Name');
         this.postalCodeInput = page.getByPlaceholder('Zip/Postal Code');
         this.continueButton = page.getByRole('button', {name:'continue'});
+        this.errorMessage = page.locator('[data-test="error"]');
     }
     async fillCheckoutInformation(
     firstName: string,

@@ -3,7 +3,9 @@ import {test} from '../fixtures/pageFixtures';
 import {users} from '../test-data/users';
 import {checkoutData} from '../test-data/checkoutData';
 
-test ('user can complete a purchase successfully' , async ({
+test.describe('Shopping tests', () => {
+    // successful purchase test
+    test ('user can complete a purchase successfully' , async ({
     page,
     loginPage, 
     inventoryPage,
@@ -29,7 +31,98 @@ test ('user can complete a purchase successfully' , async ({
     await checkoutOverviewPage.finishOrder();
     await expect(checkoutOverviewPage.successMessage).toBeVisible();
 
+});
+});
 
+test.describe('Checkout validation tests', () => {
+    // missing first name
+    // missing last name
+    // missing postal code
+    test('checkout shows error when first name is missing', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage,
+    checkoutPage
+}) => {
+    await page.goto('/');
 
+    await loginPage.login(
+        users.standardUser.username,
+        users.standardUser.password
+    );
 
+    await inventoryPage.selectBackpack();
+    await inventoryPage.addProductToCart();
+    await inventoryPage.openCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillCheckoutInformation(
+        checkoutData.missingFirstName.firstName,
+        checkoutData.missingFirstName.lastName,
+        checkoutData.missingFirstName.postalCode
+    );
+
+    await expect(checkoutPage.errorMessage).toHaveText(
+        'Error: First Name is required'
+    );
+});
+test('checkout shows error when last name is missing', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage,
+    checkoutPage
+}) => {
+    await page.goto('/');
+
+    await loginPage.login(
+        users.standardUser.username,
+        users.standardUser.password
+    );
+
+    await inventoryPage.selectBackpack();
+    await inventoryPage.addProductToCart();
+    await inventoryPage.openCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillCheckoutInformation(
+        checkoutData.missingLastName.firstName,
+        checkoutData.missingLastName.lastName,
+        checkoutData.missingLastName.postalCode
+    );
+
+    await expect(checkoutPage.errorMessage).toHaveText(
+        'Error: Last Name is required'
+    );
+});
+test('checkout shows error when postal code is missing', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage,
+    checkoutPage
+}) => {
+    await page.goto('/');
+
+    await loginPage.login(
+        users.standardUser.username,
+        users.standardUser.password
+    );
+
+    await inventoryPage.selectBackpack();
+    await inventoryPage.addProductToCart();
+    await inventoryPage.openCart();
+    await cartPage.checkout();
+
+    await checkoutPage.fillCheckoutInformation(
+        checkoutData.missingPostalCode.firstName,
+        checkoutData.missingPostalCode.lastName,
+        checkoutData.missingPostalCode.postalCode
+    );
+
+    await expect(checkoutPage.errorMessage).toHaveText(
+        'Error: Postal Code is required'
+    );
+});
 });
