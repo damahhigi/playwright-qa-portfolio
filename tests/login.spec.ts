@@ -1,13 +1,11 @@
-import{test,expect} from '@playwright/test';
-import{LoginPage } from '../pages/LoginPage';
+import{expect} from '@playwright/test';
+import{test } from '../fixtures/pageFixtures';
 import {users} from'../test-data/users';
 test.describe('Login tests',()=>{
-    let loginPage: LoginPage;
     test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  loginPage = new LoginPage(page);
 });
-test('user can open the practice site', async ({ page }) => {
+test('user can open the practice site', async ({ page, loginPage }) => {
 
     await expect(page.getByRole('button',{name: 'Login'})).toBeVisible();
 
@@ -16,7 +14,7 @@ test('user can open the practice site', async ({ page }) => {
 
 });
 
-test('user cannot login with invalid password', async ({page}) => {
+test('user cannot login with invalid password', async ({page, loginPage}) => {
     await expect(page.getByRole('button', {name:'Login'})).toBeVisible();
     await loginPage.login(users.invalidPasswordUser.username, users.invalidPasswordUser.password);
     await expect(
@@ -26,7 +24,7 @@ test('user cannot login with invalid password', async ({page}) => {
 
 });
 
-test('user cannot login with empty password', async ({ page }) => {
+test('user cannot login with empty password', async ({ page, loginPage}) => {
     await loginPage.login('standard_user', '');
     await expect(page.getByText('Epic sadface: Password is required')).toBeVisible();
 
@@ -34,7 +32,7 @@ test('user cannot login with empty password', async ({ page }) => {
 
 });
 
-test('user cannot login with empty username', async ({ page }) => {
+test('user cannot login with empty username', async ({ page, loginPage }) => {
     await loginPage.login('', 'secret_sauce');
     await expect(page.getByText('Epic sadface: Username is required')).toBeVisible();
 });
