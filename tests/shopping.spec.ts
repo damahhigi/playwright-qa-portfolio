@@ -125,4 +125,27 @@ test('checkout shows error when postal code is missing', async ({
         'Error: Postal Code is required'
     );
 });
+test('user can remove backpack from cart', async ({
+    page,
+    loginPage,
+    inventoryPage,
+    cartPage
+}) => {
+    await page.goto('/');
+
+    await loginPage.login(
+        users.standardUser.username,
+        users.standardUser.password
+    );
+
+    await inventoryPage.selectBackpack();
+    await inventoryPage.addProductToCart();
+    await inventoryPage.openCart();
+
+    await expect(cartPage.backpackName).toBeVisible();
+
+    await cartPage.removeBackpack();
+
+    await expect(cartPage.backpackName).not.toBeVisible();
+});
 });

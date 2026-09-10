@@ -91,3 +91,12 @@ test('DELETE removes an existing user', async ({ usersApi }) => {
 
     expect(responseBody).toEqual({});
 });
+test('GET user with ID zero returns 404', async ({ usersApi }) => {
+    const response = await usersApi.getUser(0);
+
+    expect(response.status()).toBe(404);
+
+    const responseBody = await response.json();
+
+    expect(responseBody).toEqual({});
+});
