@@ -2,7 +2,7 @@ import { APIRequestContext } from '@playwright/test';
 
 export class UsersApi {
     readonly request: APIRequestContext;
-    readonly baseUrl = 'https://jsonplaceholder.typicode.com';
+    readonly baseUrl = process.env.API_BASE_URL ?? '';
 
     constructor(request: APIRequestContext) {
         this.request = request;
