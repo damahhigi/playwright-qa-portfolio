@@ -2,7 +2,7 @@
 
 This repository contains a Playwright test automation framework built with TypeScript.
 
-The project demonstrates UI and API test automation using reusable test data, Page Object Model, custom Playwright fixtures, cross-browser testing, and continuous integration with GitHub Actions.
+The project demonstrates UI and API test automation using reusable test data, Page Object Model, custom Playwright fixtures, environment-based configuration, test tagging, cross-browser testing, and continuous integration with GitHub Actions.
 
 ## Tech Stack
 
@@ -27,10 +27,10 @@ The login test suite covers:
 
 The shopping test suite covers:
 
-- Login
 - Product selection
 - Add product to cart
 - Cart content validation
+- Remove product from cart
 - Checkout
 - Customer information entry
 - Order overview validation
@@ -49,6 +49,7 @@ The suite covers:
 - GET all users
 - GET a single user
 - GET a non-existent user and validate a 404 response
+- GET user with ID zero and validate boundary behavior
 - POST a new user
 - PUT an existing user
 - PATCH an existing user
@@ -81,7 +82,9 @@ playwright-portfolio/
 │   ├── api.spec.ts
 │   ├── login.spec.ts
 │   └── shopping.spec.ts
-└── playwright.config.ts
+├── .env.example
+├── playwright.config.ts
+└── README.md
 ```
 
 ## Framework Design
@@ -92,11 +95,13 @@ The project uses:
 - **API client classes** to centralize API request logic
 - **Custom Playwright fixtures** to provide reusable page objects and API clients
 - **Reusable test data** to keep test data separate from test logic
+- **Environment variables** to manage UI and API base URLs
+- **Test tags** for smoke, regression, and API test selection
 - **Dedicated Playwright projects** to separate UI and API execution
 - **Cross-browser testing** using Chromium, Firefox, and WebKit
 - **GitHub Actions** for continuous integration
 
-## Running the Tests
+## Setup
 
 Install dependencies:
 
@@ -109,6 +114,25 @@ Install Playwright browsers:
 ```bash
 npx playwright install
 ```
+
+### Environment Setup
+
+Create a `.env` file in the project root using `.env.example` as a template:
+
+```bash
+cp .env.example .env
+```
+
+The project uses:
+
+```text
+BASE_URL=https://www.saucedemo.com
+API_BASE_URL=https://jsonplaceholder.typicode.com
+```
+
+The `.env` file is excluded from Git. The `.env.example` file documents the environment variables required to run the project.
+
+## Running the Tests
 
 Run the complete test suite:
 
@@ -134,10 +158,30 @@ Run UI tests in WebKit:
 npx playwright test --project=webkit
 ```
 
-Run API tests only:
+Run the dedicated API project:
 
 ```bash
 npx playwright test --project=api
+```
+
+### Run Tests by Tag
+
+Run critical smoke tests:
+
+```bash
+npx playwright test --grep @smoke
+```
+
+Run regression tests:
+
+```bash
+npx playwright test --grep @regression
+```
+
+Run API-tagged tests:
+
+```bash
+npx playwright test --grep @api
 ```
 
 Open the HTML test report:
@@ -150,24 +194,29 @@ npx playwright show-report
 
 The framework currently contains:
 
-- 8 UI test scenarios
-- 7 API test scenarios
+- 9 UI test scenarios
+- 8 API test scenarios
 - UI tests executed across Chromium, Firefox, and WebKit
 - API tests executed once through a dedicated API project
-- 31 total test executions in a complete local run
+- **35 total test executions** in a complete run
 
 ## Continuous Integration
 
-GitHub Actions automatically runs the Playwright test suite when changes are pushed to the repository.
+GitHub Actions automatically runs the Playwright test suite when changes are pushed to the repository or submitted through a pull request.
 
-The CI pipeline validates both UI and API automation and helps identify regressions before changes are accepted.
+The CI workflow:
+
+- Installs project dependencies
+- Installs Playwright browsers
+- Provides environment configuration for UI and API tests
+- Runs the complete Playwright test suite
+- Uploads the Playwright HTML report as a workflow artifact
 
 ## Future Improvements
 
 Planned improvements include:
 
-- Environment variable and secret management
-- Additional API negative testing
+- Additional API contract and negative testing
 - Additional UI edge-case coverage
-- Test tagging and selective execution
-- Enhanced reporting
+- Enhanced test reporting
+- Secure secret management when authentication or private APIs are introduced
