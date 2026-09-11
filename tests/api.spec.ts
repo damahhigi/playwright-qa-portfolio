@@ -3,7 +3,7 @@ import { test } from '../fixtures/apiFixtures';
 import { apiData } from '../test-data/apiData';
 import { UsersApi } from '../api/UsersApi';
 
-test('GET request returns successful response', async ({ usersApi }) => {
+test('@api @smoke GET request returns successful response', async ({ usersApi }) => {
     const response = await usersApi.getUsers();
 
     expect(response.status()).toBe(200);
@@ -18,7 +18,7 @@ test('GET request returns successful response', async ({ usersApi }) => {
 
 });
 
-test('GET single user returns correct user', async ({ usersApi }) => {
+test('@api GET single user returns correct user', async ({ usersApi }) => {
     const response = await usersApi.getUser(2);
 
     expect(response.status()).toBe(200);
@@ -30,7 +30,7 @@ test('GET single user returns correct user', async ({ usersApi }) => {
     expect(responseBody.username).toBe('Antonette');
     expect(responseBody.email).toBe('Shanna@melissa.tv');
 });
-test('GET non-existent user returns 404', async ({ usersApi }) => {
+test('@api GET non-existent user returns 404', async ({ usersApi }) => {
     const response = await usersApi.getUser(9999);
 
     expect(response.status()).toBe(404);
@@ -40,7 +40,7 @@ test('GET non-existent user returns 404', async ({ usersApi }) => {
     expect(responseBody).toEqual({});
 });
 
-test('POST creates a new user', async ({ usersApi }) => {
+test('@api POST creates a new user', async ({ usersApi }) => {
     const response = await usersApi.createUser(apiData.newUser);
 
     expect(response.status()).toBe(201);
@@ -52,7 +52,7 @@ test('POST creates a new user', async ({ usersApi }) => {
     expect(responseBody.id).toBe(11);
 });
 
-test('PUT updates an existing user', async ({ usersApi }) => {
+test('@api PUT updates an existing user', async ({ usersApi }) => {
     const response = await usersApi.updateUser(
         2,
         apiData.updatedUser
@@ -68,7 +68,7 @@ test('PUT updates an existing user', async ({ usersApi }) => {
     expect(responseBody.email).toBe(apiData.updatedUser.email);
 });
 
-test('PATCH partially updates an existing user', async ({ usersApi }) => {
+test('@api PATCH partially updates an existing user', async ({ usersApi }) => {
     const response = await usersApi.partiallyUpdateUser(
         2,
         apiData.partialUpdate
@@ -82,7 +82,7 @@ test('PATCH partially updates an existing user', async ({ usersApi }) => {
     expect(responseBody.email).toBe(apiData.partialUpdate.email);
 });
 
-test('DELETE removes an existing user', async ({ usersApi }) => {
+test('@api DELETE removes an existing user', async ({ usersApi }) => {
     const response = await usersApi.deleteUser(2);
 
     expect(response.status()).toBe(200);
@@ -91,7 +91,7 @@ test('DELETE removes an existing user', async ({ usersApi }) => {
 
     expect(responseBody).toEqual({});
 });
-test('GET user with ID zero returns 404', async ({ usersApi }) => {
+test('@api GET user with ID zero returns 404', async ({ usersApi }) => {
     const response = await usersApi.getUser(0);
 
     expect(response.status()).toBe(404);

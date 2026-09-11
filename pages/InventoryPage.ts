@@ -8,7 +8,7 @@ export class InventoryPage{
     constructor (page: Page){
         this.page = page;
         this.backpackLink = page.getByText('Sauce Labs Backpack', {exact:true});
-        this.addToCartButton = page.getByRole('button', {name:'Add to cart'});
+        this.addToCartButton = page.locator('[data-test="add-to-cart"]');
         this.cartBadge = page.locator('.shopping_cart_badge');
         this.cartLink = page.locator('.shopping_cart_link');
         

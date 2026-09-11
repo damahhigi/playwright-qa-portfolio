@@ -5,7 +5,7 @@ test.describe('Login tests',()=>{
     test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
-test('user can open the practice site', async ({ page, loginPage }) => {
+test('@smoke user can open the practice site', async ({ page, loginPage }) => {
 
     await expect(page.getByRole('button',{name: 'Login'})).toBeVisible();
 
@@ -14,7 +14,7 @@ test('user can open the practice site', async ({ page, loginPage }) => {
 
 });
 
-test('user cannot login with invalid password', async ({page, loginPage}) => {
+test('@regression user cannot login with invalid password', async ({page, loginPage}) => {
     await expect(page.getByRole('button', {name:'Login'})).toBeVisible();
     await loginPage.login(users.invalidPasswordUser.username, users.invalidPasswordUser.password);
     await expect(
@@ -24,7 +24,7 @@ test('user cannot login with invalid password', async ({page, loginPage}) => {
 
 });
 
-test('user cannot login with empty password', async ({ page, loginPage}) => {
+test('@regression user cannot login with empty password', async ({ page, loginPage}) => {
     await loginPage.login('standard_user', '');
     await expect(page.getByText('Epic sadface: Password is required')).toBeVisible();
 
@@ -32,7 +32,7 @@ test('user cannot login with empty password', async ({ page, loginPage}) => {
 
 });
 
-test('user cannot login with empty username', async ({ page, loginPage }) => {
+test('@regression user cannot login with empty username', async ({ page, loginPage }) => {
     await loginPage.login('', 'secret_sauce');
     await expect(page.getByText('Epic sadface: Username is required')).toBeVisible();
 });

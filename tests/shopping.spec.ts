@@ -5,7 +5,7 @@ import {checkoutData} from '../test-data/checkoutData';
 
 test.describe('Shopping tests', () => {
     // successful purchase test
-    test ('user can complete a purchase successfully' , async ({
+    test ('@smoke @regression user can complete a purchase successfully' , async ({
     page,
     loginPage, 
     inventoryPage,
@@ -38,7 +38,7 @@ test.describe('Checkout validation tests', () => {
     // missing first name
     // missing last name
     // missing postal code
-    test('checkout shows error when first name is missing', async ({
+    test('@regression checkout shows error when first name is missing', async ({
     page,
     loginPage,
     inventoryPage,
@@ -67,7 +67,7 @@ test.describe('Checkout validation tests', () => {
         'Error: First Name is required'
     );
 });
-test('checkout shows error when last name is missing', async ({
+test('@regression checkout shows error when last name is missing', async ({
     page,
     loginPage,
     inventoryPage,
@@ -96,7 +96,7 @@ test('checkout shows error when last name is missing', async ({
         'Error: Last Name is required'
     );
 });
-test('checkout shows error when postal code is missing', async ({
+test('@regression checkout shows error when postal code is missing', async ({
     page,
     loginPage,
     inventoryPage,
@@ -125,7 +125,7 @@ test('checkout shows error when postal code is missing', async ({
         'Error: Postal Code is required'
     );
 });
-test('user can remove backpack from cart', async ({
+test('@regression user can remove backpack from cart', async ({
     page,
     loginPage,
     inventoryPage,
