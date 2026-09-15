@@ -1,4 +1,5 @@
 # Playwright QA Automation Portfolio
+![Playwright Tests](https://github.com/damahhigi/playwright-qa-portfolio/actions/workflows/playwright.yml/badge.svg)
 
 This repository contains a Playwright test automation framework built with TypeScript.
 
@@ -202,7 +203,7 @@ The framework currently contains:
 
 ## Continuous Integration
 
-GitHub Actions automatically runs the Playwright test suite when changes are pushed to the repository or submitted through a pull request.
+GitHub Actions automatically runs the Playwright test suite on pushes, pull requests, and a daily scheduled execution at 05:00 UTC.
 
 The CI workflow:
 
@@ -211,6 +212,7 @@ The CI workflow:
 - Provides environment configuration for UI and API tests
 - Runs the complete Playwright test suite
 - Uploads the Playwright HTML report as a workflow artifact
+- Runs the full suite daily to build continuous execution history and help identify intermittent or environment-related failures
 
 ## What I Chose Not to Automate and Why
 
