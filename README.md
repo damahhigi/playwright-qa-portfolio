@@ -212,6 +212,22 @@ The CI workflow:
 - Runs the complete Playwright test suite
 - Uploads the Playwright HTML report as a workflow artifact
 
+## What I Chose Not to Automate and Why
+
+Automation is most valuable when tests are repeatable, deterministic, and provide useful regression feedback. I therefore chose not to automate every possible scenario in this portfolio.
+
+- **Visual appearance and layout checks** – These are better suited to dedicated visual regression testing. The current framework focuses on functional behavior rather than pixel-level UI comparison.
+
+- **CAPTCHA, MFA, and other human-verification flows** – These mechanisms are intentionally designed to prevent automated interaction and would normally require test-environment support or controlled bypasses.
+
+- **Real payment processing** – The demo application does not integrate with a real payment provider. Automating real financial transactions would also require a controlled sandbox and appropriate test data.
+
+- **Extensive negative API validation** – JSONPlaceholder is a mock API and accepts or simulates many write operations without enforcing realistic business validation. I avoided creating tests with invented expectations that are not supported by the API's actual behavior.
+
+- **Large numbers of similar test cases** – I prioritized representative risk and behavior coverage rather than increasing the test count with scenarios that validate essentially the same behavior.
+
+The goal of this portfolio is to demonstrate maintainable automation and thoughtful test selection rather than automate every possible case.
+
 ## Future Improvements
 
 Planned improvements include:
